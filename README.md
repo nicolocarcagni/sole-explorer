@@ -32,16 +32,17 @@ Follow these steps to get the explorer running on your local machine.
 *   **Node.js** (v18 or higher recommended)
 *   **npm** or **yarn**
 
+    ```bash
     git clone https://github.com/ncarcagni/sole-explorer.git
     cd sole-explorer
     ```
 
 2.  **Install dependencies**
-    
+    ```bash
     npm install
     ```
 
-3.  **Start the development server**
+2.  **Start the development server**
     ```bash
     npm run dev
     ```
@@ -64,6 +65,16 @@ To connect to a local node or a different network, simply update this URL.
 *   `components`: Reusable UI components (Navbar, Layout, etc.).
 *   `services`: API integration logic.
 *   `types.ts`: TypeScript interfaces for the Sole protocol (Blocks, Txs).
+
+## 🧩 Screenshot
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cdb8c6d3-922b-4b47-a437-7d11a188edf3" width="45%" />
+  <img src="https://github.com/user-attachments/assets/4c5500d7-61ee-432e-87e2-df9ad28d9bb5" width="45%" />
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8f8e8120-f1c4-490e-aed6-a4922338b3da" width="91%" />
+</p>
 
 ## 🤝 Contributing
 
