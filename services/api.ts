@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../constants";
-import { ApiBlock, ApiTransaction, TipResponse, BalanceResponse } from "../types";
+import { ApiBlock, ApiTransaction, TipResponse, BalanceResponse, PeersResponse, ValidatorsResponse } from "../types";
 
 export const getTip = async (): Promise<TipResponse> => {
   const response = await fetch(`${API_BASE_URL}/blocks/tip`);
@@ -28,7 +28,8 @@ export const getTransaction = async (txid: string): Promise<ApiTransaction> => {
 export const getBalance = async (address: string): Promise<BalanceResponse> => {
   const response = await fetch(`${API_BASE_URL}/balance/${address}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch balance");
+    if (response.status === 404) throw new Error("Address not found");
+    throw new Error(`Failed to fetch balance: ${response.statusText}`);
   }
   return response.json();
 };
@@ -38,11 +39,29 @@ export const getAddressTransactions = async (address: string): Promise<ApiTransa
   // Construct the endpoint. If the real API uses a different path, this should be updated.
   const response = await fetch(`${API_BASE_URL}/address/${address}/transactions`);
   if (!response.ok) {
-    if (response.status === 404) return []; // Return empty if not found or no txs
-    // For now, if the endpoint doesn't exist on the server, we just return empty array
-    // to avoid breaking the UI.
-    console.warn("Failed to fetch address transactions, endpoint might not exist.");
-    return [];
+    if (response.status === 404) return []; // Return empty if not found (no txs)
+    // Throw error for other status codes so UI can show a warning
+    throw new Error(`Failed to fetch transactions: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const getPeers = async (): Promise<PeersResponse> => {
+  const response = await fetch(`${API_BASE_URL}/network/peers`);
+  if (!response.ok) {
+    // If endpoint doesn't exist yet, return empty to prevent crash
+    if (response.status === 404) return { peers: [] };
+    throw new Error("Failed to fetch peers");
+  }
+  return response.json();
+};
+
+export const getValidators = async (): Promise<ValidatorsResponse> => {
+  const response = await fetch(`${API_BASE_URL}/consensus/validators`);
+  if (!response.ok) {
+    // If endpoint doesn't exist yet, return empty
+    if (response.status === 404) return { validators: [] };
+    throw new Error("Failed to fetch validators");
   }
   return response.json();
 };

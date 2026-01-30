@@ -38,6 +38,14 @@ export interface ApiBlock {
   signature: string;
 }
 
+export interface PeersResponse {
+  peers: string[];
+}
+
+export interface ValidatorsResponse {
+  validators: string[];
+}
+
 // Re-export specific types if components rely on generic names, 
 // or simply use these Api* types throughout the app.
 export type Block = ApiBlock;

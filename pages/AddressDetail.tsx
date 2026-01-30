@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getBalance, getAddressTransactions } from '../services/api';
 import { BalanceResponse, ApiTransaction } from '../types';
 import { formatSole, truncateHash, formatTime } from '../utils/format';
-import { Wallet, ArrowLeft, History, ArrowRightCircle, Copy, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Wallet, ArrowLeft, History, ArrowRightCircle, Copy, CheckCircle2, AlertTriangle, ArrowRight, RefreshCw } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const AddressDetail: React.FC = () => {
@@ -14,6 +14,7 @@ const AddressDetail: React.FC = () => {
   const [transactions, setTransactions] = useState<ApiTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [txError, setTxError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const AddressDetail: React.FC = () => {
       
       setLoading(true);
       setError(null);
+      setTxError(null);
       
       try {
         // Fetch balance and transactions in parallel
@@ -30,17 +32,25 @@ const AddressDetail: React.FC = () => {
           getAddressTransactions(address)
         ]);
 
+        // Handle Balance (Fatal Error if failed)
         if (balRes.status === 'fulfilled') {
           setBalanceData(balRes.value);
         } else {
-          // If balance fetch fails, it might be an invalid address
-          throw new Error("Address not found or invalid.");
+          const msg = balRes.reason?.message || "Unknown error";
+          if (msg.includes("Address not found") || msg.includes("404")) {
+             throw new Error("Address not found on the network.");
+          }
+          throw new Error("System is unable to retrieve address balance.");
         }
 
+        // Handle Transactions (Non-fatal Error if failed)
         if (txsRes.status === 'fulfilled') {
           // Sort transactions by timestamp desc if they have timestamps
           const sortedTxs = [...txsRes.value].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
           setTransactions(sortedTxs);
+        } else {
+          console.error("Tx fetch failed:", txsRes.reason);
+          setTxError("Unable to load transaction history.");
         }
         
       } catch (err: any) {
@@ -62,13 +72,15 @@ const AddressDetail: React.FC = () => {
     }
   };
 
+  const reloadPage = () => window.location.reload();
+
   if (loading) return <LoadingSpinner />;
 
   if (error || !balanceData) {
     return (
       <div className="bg-red-950/20 border border-red-500/20 p-8 rounded-2xl text-center max-w-lg mx-auto mt-10">
         <AlertTriangle className="mx-auto text-red-500 mb-4" size={48} />
-        <h2 className="text-red-400 font-bold text-xl mb-2">Address Not Found</h2>
+        <h2 className="text-red-400 font-bold text-xl mb-2">Address Error</h2>
         <p className="text-red-300/80 mb-6">{error || "The address you are looking for does not exist on this chain."}</p>
         <button onClick={() => navigate('/')} className="px-6 py-2 bg-red-900/50 hover:bg-red-900 text-red-200 rounded-lg transition">
            Return Home
@@ -122,10 +134,10 @@ const AddressDetail: React.FC = () => {
                    <span className="text-xs text-night-400">Total Transactions</span>
                    <span className="text-white font-mono font-medium">{transactions.length}</span>
                 </div>
-                {/* Placeholder for future stats */}
+                {/* Stats */}
                 <div className="flex justify-between items-center">
                    <span className="text-xs text-night-400">Last Active</span>
-                   <span className="text-sole-400 text-xs">{transactions.length > 0 ? formatTime(transactions[0].timestamp) : 'Never'}</span>
+                   <span className="text-sole-400 text-xs">{transactions.length > 0 ? formatTime(transactions[0].timestamp) : 'N/A'}</span>
                 </div>
              </div>
           </div>
@@ -138,9 +150,22 @@ const AddressDetail: React.FC = () => {
                <h3 className="font-semibold text-white flex items-center gap-2">
                  <History size={18} className="text-sole-500"/> Transaction History
                </h3>
+               {txError && (
+                 <button onClick={reloadPage} className="p-1.5 hover:bg-white/5 rounded-full text-night-400 hover:text-white transition">
+                   <RefreshCw size={14} />
+                 </button>
+               )}
             </div>
             
-            {transactions.length > 0 ? (
+            {txError ? (
+               <div className="flex flex-col items-center justify-center h-64 text-red-400 p-8 text-center animate-in fade-in">
+                  <div className="bg-red-900/20 p-3 rounded-full mb-3 border border-red-500/20">
+                    <AlertTriangle size={24} />
+                  </div>
+                  <p className="font-medium mb-1">{txError}</p>
+                  <p className="text-xs text-red-400/70 max-w-xs">There was an issue retrieving the transaction history for this address.</p>
+               </div>
+            ) : transactions.length > 0 ? (
               <div className="divide-y divide-white/5">
                  {transactions.map((tx) => {
                     // Check flow direction relative to this address
