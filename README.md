@@ -1,6 +1,6 @@
-# ☀️ Sole Block Explorer
+# ☀️ Sole Explorer
 
-Welcome to the **Sole Block Explorer**, a modern and intuitive interface for navigating the Sole blockchain. This project allows users to explore blocks, verify transactions, and check address balances with a sleek, user-friendly design.
+Welcome to the **Sole Explorer**, a modern and intuitive interface for navigating the Sole blockchain. This project allows users to explore blocks, verify transactions, and check address balances with a sleek, user-friendly design.
 
 ## 🚀 Features
 
@@ -32,16 +32,12 @@ Follow these steps to get the explorer running on your local machine.
 *   **Node.js** (v18 or higher recommended)
 *   **npm** or **yarn**
 
-### Installation
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/yourusername/sole-block-explorer.git
-    cd sole-block-explorer
+    git clone https://github.com/ncarcagni/sole-explorer.git
+    cd sole-explorer
     ```
 
 2.  **Install dependencies**
-    ```bash
+    
     npm install
     ```
 
