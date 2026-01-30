@@ -20,10 +20,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       <footer className="border-t border-white/5 py-8 mt-8 bg-night-950 z-10 relative">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-night-400 text-sm">© 2026 Università del Salento</p>
+          <p className="text-night-400 text-sm">
+            MIT License • Developed by <a href="https://nicolocarcagni.dev" target="_blank" rel="noopener noreferrer" className="text-sole-500 hover:text-sole-400 transition-colors">nicolocarcagni.dev</a>
+          </p>
           <div className="flex items-center justify-center gap-2 mt-2 text-xs text-night-600">
             <span className="w-1.5 h-1.5 rounded-full bg-sole-500"></span>
-            <span>SOLE Blockchain Explorer • v1.0.0</span>
+            <span>SOLE Blockchain Explorer</span>
           </div>
         </div>
       </footer>
