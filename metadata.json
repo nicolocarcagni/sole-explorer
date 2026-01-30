@@ -1,0 +1,5 @@
+{
+  "name": "SOLE Block Explorer",
+  "description": "A modern blockchain explorer for the SOLE network built with React and Tailwind CSS.",
+  "requestFramePermissions": []
+}
