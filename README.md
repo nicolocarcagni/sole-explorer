@@ -1,6 +1,6 @@
 # ☀️ Sole Explorer
 
-Welcome to the **Sole Explorer**, a modern and intuitive interface for navigating the Sole blockchain. This project allows users to explore blocks, verify transactions, and check address balances with a sleek, user-friendly design.
+**Sole Explorer** is a modern and intuitive interface for navigating the SOLE blockchain. This project allows users to explore blocks, verify transactions, and check address balances with a sleek, user-friendly design.
 
 ## 🚀 Features
 
@@ -86,6 +86,6 @@ Contributions are welcome! If you find a bug or want to add a feature:
 4.  Push to the branch
 5.  Open a Pull Request.
 
-## 🤖 AI Acknowledgement
+## 🤖 Acknowledgement
 
-Some parts of this project were generated with the assistance of AI.
+> Some parts of this project and this README.md were generated with the assistance of AI.
