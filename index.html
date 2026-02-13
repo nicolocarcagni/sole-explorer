@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SOLE Block Explorer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOLE Block Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            sole: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b', // Primary Gold
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
             },
-            colors: {
-              sole: {
-                50: '#fffbeb',
-                100: '#fef3c7',
-                200: '#fde68a',
-                300: '#fcd34d',
-                400: '#fbbf24',
-                500: '#f59e0b', // Primary Gold
-                600: '#d97706',
-                700: '#b45309',
-                800: '#92400e',
-                900: '#78350f',
-                950: '#451a03',
-              },
-              night: {
-                50: '#f8fafc',
-                100: '#f1f5f9',
-                200: '#e2e8f0',
-                300: '#cbd5e1',
-                400: '#94a3b8',
-                500: '#64748b',
-                600: '#475569',
-                700: '#334155',
-                800: '#1e293b', // Secondary Card Bg
-                900: '#0f172a', // Primary Card Bg
-                950: '#020617', // Main Background
-              }
-            },
-            animation: {
-              'spin-slow': 'spin 8s linear infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            night: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b', // Secondary Card Bg
+              900: '#0f172a', // Primary Card Bg
+              950: '#020617', // Main Background
             }
+          },
+          animation: {
+            'spin-slow': 'spin 8s linear infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           }
         }
       }
-    </script>
+    }
+  </script>
   <script type="importmap">
 {
   "imports": {
@@ -60,10 +61,11 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-night-950 text-night-50 antialiased selection:bg-sole-500/30 selection:text-sole-200">
-    <div id="root"></div>
+
+<body class="bg-night-950 text-night-50 antialiased selection:bg-sole-500/30 selection:text-sole-200">
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>
