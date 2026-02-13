@@ -16,7 +16,7 @@ export const ADDRESS_TYPE_STYLES: Record<AddressType, string> = {
 };
 
 export const KNOWN_ADDRESSES: Record<string, KnownAddress> = {
-  "1KP1zQs7QWdZcn3uP2Vu9JEmpaZZtVEzYL": {
+  "1FaUcBN9b72SGmf4tCXXJGYvJTaB9evVqA": {
     label: "Faucet",
     type: 'faucet',
   },
@@ -24,7 +24,7 @@ export const KNOWN_ADDRESSES: Record<string, KnownAddress> = {
     label: "Foundation",
     type: 'foundation',
   },
-  "15U3MUvm16pZSH8WTZHkUw8ngNMjB1pfpw": {
+  "1HSYNy8yXUuUZrkBCnzSc34Lqr8soPAKQL": {
     label: "Genesis",
     type: 'foundation',
   },
