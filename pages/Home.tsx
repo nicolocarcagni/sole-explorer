@@ -3,7 +3,7 @@ import { getLastBlocks, getTip, getPeers, getValidators } from '../services/api'
 import { ApiBlock, TipResponse } from '../types';
 import BlockList from '../components/BlockList';
 import Modal from '../components/Modal';
-import { Activity, HardDrive, Server, ShieldCheck, Copy, CheckCircle2, Network, Globe } from 'lucide-react';
+import { Activity, HardDrive, Server, ShieldCheck, Copy, CheckCircle2, Network, Globe, Maximize2, Cpu } from 'lucide-react';
 import { API_BASE_URL } from '../constants';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -13,11 +13,9 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modal States
   const [peersModalOpen, setPeersModalOpen] = useState(false);
   const [validatorsModalOpen, setValidatorsModalOpen] = useState(false);
   
-  // Modal Data
   const [peers, setPeers] = useState<string[]>([]);
   const [validators, setValidators] = useState<string[]>([]);
   const [loadingModal, setLoadingModal] = useState(false);
@@ -27,7 +25,6 @@ const Home: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Parallel fetch for Tip and Recent Blocks list
         const [tipData, blocksData] = await Promise.all([
           getTip(),
           getLastBlocks(10)
@@ -44,7 +41,6 @@ const Home: React.FC = () => {
     };
 
     fetchData();
-    // Poll every 10 seconds
     const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
   }, []);
@@ -85,135 +81,135 @@ const Home: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Network Dashboard</h1>
-        <p className="text-night-400">Real-time explorer for the SOLE blockchain.</p>
-      </div>
+      {/* Network Dashboard Header Removed */}
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* Card 1: Block Height (Non-interactive) */}
-        <div className="bg-night-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-sole-500/10 rounded-full blur-2xl"></div>
+        {/* Card 1: Block Height */}
+        <div className="bg-night-900/50 backdrop-blur-sm p-6 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-sole-500/10 rounded-full blur-2xl group-hover:bg-sole-500/20 transition-all duration-500"></div>
           <div className="flex items-center justify-between relative z-10">
-            <div className="p-3 bg-night-800 rounded-xl text-sole-500 border border-white/5 shadow-inner">
-              <Server size={24} />
+            <div className="p-3.5 bg-night-800 rounded-2xl text-sole-500 border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
+              <Cpu size={24} />
             </div>
             <div className="text-right">
-              <p className="text-xs font-medium text-sole-400 uppercase tracking-wider mb-1">Current Height</p>
-              <h3 className="text-3xl font-bold text-white tracking-tight">
+              <p className="text-[10px] font-bold text-sole-500/60 uppercase tracking-[0.2em] mb-1">Chain Height</p>
+              <h3 className="text-3xl font-black text-white tracking-tighter">
                 {tip?.height?.toLocaleString() ?? '-'}
               </h3>
             </div>
           </div>
         </div>
 
-        {/* Card 2: Network Status (Interactive) */}
+        {/* Card 2: Network Status */}
         <button 
           onClick={handleOpenPeers}
-          className="bg-night-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/5 relative overflow-hidden group hover:border-emerald-500/40 hover:bg-white/[0.02] transition-all duration-300 text-left w-full cursor-pointer"
+          className="bg-night-900/50 backdrop-blur-sm p-6 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden group hover:border-emerald-500/40 hover:bg-white/[0.02] hover:scale-[1.02] transition-all duration-500 text-left w-full cursor-pointer"
         >
-          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all duration-500"></div>
+          <div className="absolute top-4 right-4 text-emerald-500/0 group-hover:text-emerald-500/40 transition-all duration-300">
+             <Maximize2 size={16} />
+          </div>
           
           <div className="flex justify-between relative z-10 w-full">
-            {/* Left Column: Icon + Label */}
-            <div className="flex flex-col items-start gap-3">
-              <div className="p-3 bg-night-800 rounded-xl text-emerald-500 border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-300">
+            <div className="flex flex-col items-start gap-4">
+              <div className="p-3.5 bg-night-800 rounded-2xl text-emerald-500 border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
                 <Activity size={24} />
               </div>
-              <div className="text-[10px] text-emerald-500/70 font-medium uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="text-[10px] text-emerald-500 font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                 View Peers
               </div>
             </div>
 
-            {/* Right Column: Data */}
-            <div className="text-right">
-              <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider mb-1">Network Status</p>
-              <h3 className="text-2xl font-bold text-white tracking-tight flex items-center justify-end gap-2">
-                {error ? (
-                  <span className="text-red-500">Offline</span>
-                ) : (
-                  <>
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    Operational
-                  </>
-                )}
-              </h3>
+            <div className="text-right flex flex-col justify-between">
+              <div>
+                <p className="text-[10px] font-bold text-emerald-500/60 uppercase tracking-[0.2em] mb-1">Status</p>
+                <h3 className="text-2xl font-black text-white tracking-tighter flex items-center justify-end gap-2">
+                  {error ? (
+                    <span className="text-red-500">Offline</span>
+                  ) : (
+                    <>
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.8)]"></span>
+                      Active
+                    </>
+                  )}
+                </h3>
+              </div>
             </div>
           </div>
         </button>
 
-        {/* Card 3: Consensus (Interactive) */}
+        {/* Card 3: Consensus */}
         <button 
           onClick={handleOpenValidators}
-          className="bg-night-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/5 relative overflow-hidden group hover:border-purple-500/40 hover:bg-white/[0.02] transition-all duration-300 text-left w-full cursor-pointer"
+          className="bg-night-900/50 backdrop-blur-sm p-6 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden group hover:border-purple-500/40 hover:bg-white/[0.02] hover:scale-[1.02] transition-all duration-500 text-left w-full cursor-pointer"
         >
-          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+          <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all duration-500"></div>
+          <div className="absolute top-4 right-4 text-purple-500/0 group-hover:text-purple-500/40 transition-all duration-300">
+             <Maximize2 size={16} />
+          </div>
           
           <div className="flex justify-between relative z-10 w-full">
-            {/* Left Column: Icon + Label */}
-            <div className="flex flex-col items-start gap-3">
-              <div className="p-3 bg-night-800 rounded-xl text-purple-500 border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                <HardDrive size={24} />
+            <div className="flex flex-col items-start gap-4">
+              <div className="p-3.5 bg-night-800 rounded-2xl text-purple-500 border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                <ShieldCheck size={24} />
               </div>
-              <div className="text-[10px] text-purple-500/70 font-medium uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                View Validators
+              <div className="text-[10px] text-purple-500 font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg bg-purple-500/5 border border-purple-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                Validators
               </div>
             </div>
 
-            {/* Right Column: Data */}
             <div className="text-right">
-              <p className="text-xs font-medium text-purple-400 uppercase tracking-wider mb-1">Consensus</p>
-              <h3 className="text-xl font-bold text-white tracking-tight">Proof of Authority</h3>
+              <p className="text-[10px] font-bold text-purple-500/60 uppercase tracking-[0.2em] mb-1">Consensus</p>
+              <h3 className="text-xl font-black text-white tracking-tighter">Proof of Authority</h3>
             </div>
           </div>
         </button>
       </div>
 
       {error && (
-         <div className="bg-red-950/30 border border-red-500/30 p-4 rounded-xl flex items-center gap-3">
-            <div className="bg-red-500/20 p-2 rounded-full">
-              <Activity size={16} className="text-red-500" />
+         <div className="bg-red-950/30 border border-red-500/30 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+            <div className="bg-red-500/20 p-2.5 rounded-full">
+              <Activity size={18} className="text-red-500" />
             </div>
-            <p className="text-sm text-red-300">{error}</p>
+            <p className="text-sm font-medium text-red-300">{error}</p>
          </div>
       )}
 
-      {/* Blocks Table */}
       <BlockList blocks={blocks} loading={loading} />
-
-      {/* ---------------- MODALS ---------------- */}
 
       {/* Peers Modal */}
       <Modal 
         isOpen={peersModalOpen} 
         onClose={() => setPeersModalOpen(false)} 
-        title="Public Nodes"
+        title="Network Peers"
       >
         {loadingModal ? (
           <div className="py-12"><LoadingSpinner /></div>
         ) : peers.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-night-400 text-center">
             <Network size={48} className="mb-4 opacity-20" />
-            <p>No peers connected currently.</p>
+            <p className="text-lg font-medium">No peers connected</p>
+            <p className="text-sm text-night-500 mt-1">The node is operating in isolation.</p>
           </div>
         ) : (
-          <div className="space-y-3">
-             <div className="flex items-center gap-2 mb-4 px-2">
-                <Globe size={16} className="text-emerald-500"/>
-                <span className="text-sm text-night-300">Total Peers: <strong className="text-white">{peers.length}</strong></span>
+          <div className="space-y-2">
+             <div className="flex items-center justify-between mb-4 px-3 py-2 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Globe size={16} className="text-emerald-500"/>
+                  <span className="text-xs font-bold text-emerald-200 uppercase tracking-widest">Active Discovery</span>
+                </div>
+                <span className="text-xs font-mono text-emerald-500">{peers.length} Nodes</span>
              </div>
              {peers.map((peer, idx) => (
-               <div key={idx} className="flex items-center gap-4 p-4 rounded-xl bg-night-950/50 border border-white/5 hover:border-emerald-500/30 transition-colors group">
-                 <div className="p-2 bg-night-900 rounded-lg text-emerald-500/50 group-hover:text-emerald-500 transition-colors">
-                   <Server size={20} />
+               <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-emerald-500/30 transition-all duration-300 group">
+                 <div className="p-2.5 bg-night-950 rounded-xl text-night-400 group-hover:text-emerald-500 transition-colors border border-white/5">
+                   <Server size={18} />
                  </div>
                  <div className="flex-1 min-w-0">
-                   <p className="text-sm font-mono text-night-200 truncate">{peer}</p>
+                   <p className="text-sm font-mono text-night-200 truncate group-hover:text-white transition-colors">{peer}</p>
                  </div>
-                 <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.5)]"></div>
+                 <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] group-hover:animate-ping"></div>
                </div>
              ))}
           </div>
@@ -224,39 +220,45 @@ const Home: React.FC = () => {
       <Modal 
         isOpen={validatorsModalOpen} 
         onClose={() => setValidatorsModalOpen(false)} 
-        title="Authority Set"
+        title="Active Authority"
       >
         {loadingModal ? (
            <div className="py-12"><LoadingSpinner /></div>
         ) : validators.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-night-400 text-center">
             <ShieldCheck size={48} className="mb-4 opacity-20" />
-            <p>No active validators found.</p>
+            <p className="text-lg font-medium">No validators found</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            <div className="text-xs text-night-500 uppercase tracking-wider mb-2 px-1">Active Validators ({validators.length})</div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between mb-4 px-3 py-2 bg-purple-500/5 border border-purple-500/20 rounded-xl">
+               <div className="flex items-center gap-2">
+                 <ShieldCheck size={16} className="text-purple-500"/>
+                 <span className="text-xs font-bold text-purple-200 uppercase tracking-widest">Authority Set</span>
+               </div>
+               <span className="text-xs font-mono text-purple-500">{validators.length} Validators</span>
+            </div>
             {validators.map((val, idx) => (
               <div 
                 key={idx} 
-                className="group relative flex items-center justify-between p-4 rounded-xl bg-night-950/50 border border-white/5 hover:border-purple-500/30 transition-all cursor-pointer"
+                className="group relative flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-purple-500/30 transition-all duration-300 cursor-pointer"
                 onClick={() => handleCopy(val)}
               >
                 <div className="flex items-center gap-4 min-w-0 flex-1">
-                  <div className="p-2 bg-night-900 rounded-lg text-purple-500/50 group-hover:text-purple-500 transition-colors">
-                    <ShieldCheck size={20} />
+                  <div className="p-2.5 bg-night-950 rounded-xl text-night-400 group-hover:text-purple-500 transition-colors border border-white/5">
+                    <HardDrive size={18} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-mono text-night-200 truncate pr-4">{val}</p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                       <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                       <span className="text-[10px] text-green-500 font-medium uppercase tracking-wide">Active</span>
+                    <p className="text-sm font-mono text-night-200 truncate pr-4 group-hover:text-white transition-colors">{val}</p>
+                    <div className="flex items-center gap-1.5 mt-1">
+                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.5)]"></span>
+                       <span className="text-[9px] text-emerald-500/80 font-black uppercase tracking-widest">Authorized</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="text-night-500 group-hover:text-white transition-colors pl-2">
-                   {copiedValidator === val ? <CheckCircle2 size={18} className="text-emerald-500"/> : <Copy size={18} />}
+                <div className="text-night-500 group-hover:text-purple-400 transition-all duration-300 pl-2">
+                   {copiedValidator === val ? <CheckCircle2 size={18} className="text-emerald-500 animate-in zoom-in"/> : <Copy size={18} className="group-hover:scale-110 active:scale-90" />}
                 </div>
               </div>
             ))}

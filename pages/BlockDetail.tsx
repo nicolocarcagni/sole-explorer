@@ -5,6 +5,7 @@ import { ApiBlock } from '../types';
 import { formatTime, truncateHash, formatSole } from '../utils/format';
 import { ArrowLeft, Box, Hash, Clock, AlertTriangle, ShieldCheck } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
+import AddressBadge from '../components/AddressBadge';
 
 const BlockDetail: React.FC = () => {
   const { hash } = useParams<{ hash: string }>();
@@ -47,7 +48,6 @@ const BlockDetail: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate(-1)} className="p-3 bg-night-900 hover:bg-night-800 border border-white/5 rounded-full text-night-400 hover:text-white transition shadow-lg">
@@ -69,8 +69,6 @@ const BlockDetail: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Main Info Card */}
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-night-900/50 backdrop-blur-sm rounded-2xl border border-white/5 overflow-hidden shadow-xl">
             <div className="px-6 py-5 bg-white/[0.02] border-b border-white/5">
@@ -112,7 +110,6 @@ const BlockDetail: React.FC = () => {
             </div>
           </div>
 
-          {/* Transactions List */}
           <div className="bg-night-900/50 backdrop-blur-sm rounded-2xl border border-white/5 overflow-hidden shadow-xl">
             <div className="px-6 py-5 border-b border-white/5">
               <h3 className="font-semibold text-white">Transactions</h3>
@@ -129,7 +126,6 @@ const BlockDetail: React.FC = () => {
                 <tbody className="divide-y divide-white/5">
                   {block.transactions && block.transactions.length > 0 ? (
                     block.transactions.map((tx) => {
-                      // Check coinbase: inputs array exists and first sender is "COINBASE"
                       const isCoinbase = tx.inputs && tx.inputs.length > 0 && tx.inputs[0].sender_address === "COINBASE";
                       const totalValue = tx.outputs.reduce((acc, out) => acc + (out.value_sole || 0), 0);
 
@@ -162,7 +158,6 @@ const BlockDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar Info */}
         <div className="space-y-6">
            <div className="bg-gradient-to-br from-night-900 to-night-950 p-6 rounded-2xl border border-white/5 shadow-xl">
               <div className="flex items-center gap-3 mb-4">
@@ -170,7 +165,7 @@ const BlockDetail: React.FC = () => {
                  <h3 className="font-semibold text-white">Validator</h3>
               </div>
               <div className="p-3 bg-night-950 rounded-lg border border-white/5 mb-4">
-                 <p className="font-mono text-xs text-night-300 break-all leading-relaxed">{block.validator}</p>
+                 <AddressBadge address={block.validator} truncate={false} className="text-[11px] leading-relaxed break-all" />
               </div>
               <p className="text-xs text-night-500">The validator responsible for proposing and signing this block.</p>
            </div>
@@ -193,7 +188,6 @@ const BlockDetail: React.FC = () => {
               </ul>
            </div>
         </div>
-
       </div>
     </div>
   );
